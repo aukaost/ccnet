@@ -46,13 +46,21 @@ fi
 AC_MSG_CHECKING(for Mac)
 if test "$(uname)" = "Darwin"; then
   bmac=true
-  AC_MSG_RESULT(compile in mac)
+  AC_MSG_RESULT(compile on Mac OS X)
+else
+  AC_MSG_RESULT(no)
+fi
+
+AC_MSG_CHECKING(for FreeBSD)
+if test "$(uname)" = "FreeBSD"; then
+  bfbsd=true
+  AC_MSG_RESULT(compile on FreeBSD)
 else
   AC_MSG_RESULT(no)
 fi
 
 AC_MSG_CHECKING(for Linux)
-if test "$bmac" != "true" -a "$bwin32" != "true"; then
+if test "$bmac" != "true" -a "$bwin32" != "true" -a "$bfbsd" != "true"; then
   blinux=true
   AC_MSG_RESULT(compile in linux)
 else
@@ -154,6 +162,7 @@ AM_CONDITIONAL([COMPILE_DEMO], [test "${compile_demo}" = "yes"])
 AM_CONDITIONAL([WIN32], [test "$bwin32" = "true"])
 AM_CONDITIONAL([MACOS], [test "$bmac" = "true"])
 AM_CONDITIONAL([LINUX], [test "$blinux" = "true"])
+AM_CONDITIONAL([FREEBSD], [test "$bfbsd" = "true"])
 
 
 # check libraries
@@ -161,7 +170,7 @@ if test "$bwin32" != true; then
   if test "$bmac" = true; then
   AC_CHECK_LIB(c, uuid_generate, [echo "found library uuid"],
           AC_MSG_ERROR([*** Unable to find uuid_generate in libc]), )
-  else
+  elif test "$blinux" = true || test "$bfbsd" = true ; then
   AC_CHECK_LIB(uuid, uuid_generate, [echo "found library uuid"],
           AC_MSG_ERROR([*** Unable to find uuid library]), )
   fi
@@ -230,6 +239,18 @@ elif test "$bmac" = true ; then
   LIB_PSAPI=
   MSVC_CFLAGS=
   LIB_DIRWATCH="-framework CoreServices"
+elif test "$bfbsd" = true ; then
+  LIB_WS32=
+  LIB_GDI32=
+  LIB_RT=
+  LIB_INTL=
+  LIB_RESOLV=
+  LIB_UUID=-luuid
+  LIB_IPHLPAPI=
+  LIB_SHELL32=
+  LIB_PSAPI=
+  MSVC_CFLAGS=
+  LIB_DIRWATCH=
 else
   LIB_WS32=
   LIB_GDI32=

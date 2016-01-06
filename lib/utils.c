@@ -14,6 +14,10 @@
     #include <arpa/inet.h>
 #endif
 
+#ifdef __FreeBSD__
+#include <netinet/in.h>
+#endif
+
 #ifndef WIN32
 #include <pwd.h>
 #include <uuid/uuid.h>

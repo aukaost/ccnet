@@ -49,19 +49,19 @@ EXTRA_DIST = ccnetobj.vala rpc_table.py
 libccnet_la_LDFLAGS = -no-undefined -version-info 0:0:0
 libccnet_la_LIBADD = @PTHREAD_LIBS@ @GLIB2_LIBS@ @GOBJECT_LIBS@ @SSL_LIBS@ @LIB_GDI32@ \
 				     @LIB_UUID@ @LIB_WS32@ @LIB_PSAPI@ -lsqlite3 \
-					 @LIBEVENT_LIBS@ @SEARPC_LIBS@ @LIB_SHELL32@
+					 @LIBEVENT_LIBS@ @SEARPC_LIBS@ @LIB_SHELL32@ -ljansson -lsearpc
 
 
 noinst_LTLIBRARIES = libccnetd.la
 
 libccnetd_la_SOURCES = utils.c db.c job-mgr.c \
-	rsa.c bloom-filter.c marshal.c net.c timer.c ccnet-session-base.c \
+	rsa.c bloom-filter.c marshal.c net.c timer.c ccnet-session-base.c 
 	ccnetobj.c
 
 libccnetd_la_LDFLAGS = -no-undefined
 libccnetd_la_LIBADD = @GLIB2_LIBS@  @GOBJECT_LIBS@ @SSL_LIBS@ @LIB_GDI32@ \
 	                  -lsqlite3 @LIBEVENT_LIBS@ @LIB_WS32@ @LIB_UUID@ \
-					  @LIB_SHELL32@ @LIB_PSAPI@ @SEARPC_LIBS@
+					  @LIB_SHELL32@ @LIB_PSAPI@ @SEARPC_LIBS@ -ljansson -lsearpc -lccnet
 
 
 ccnet_object_define = ccnetobj.vala
